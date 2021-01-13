@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
-use App\Transaction;
+use App\Models\Transaction;
 
 class TransactionController extends Controller
 {
@@ -36,13 +36,16 @@ class TransactionController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
+            'reciever_id' => 'required',
+            'amount' => 'required',
+            'description' => 'required',
             'title' => 'required',
-            'description' => 'required'
+            'transaction_type' => 'required'
         ]);
         
-        $transaction = new transaction();
-        $transaction->transaction_id = rand(2,50);
-        $transaction->sender_id = Auth()->id();
+        $transaction = new Transaction();
+        $transaction->transaction_id = rand(2,5000);
+        // $transaction->sender_id = Auth()->id();
         $transaction->reciever_id = $request->reciever_id;
         $transaction->amount = $request->amount;
         $transaction->description = $request->description;
@@ -57,7 +60,7 @@ class TransactionController extends Controller
         else
             return response()->json([
                 'success' => false,
-                'message' => 'transaction not added'
+                'message' => 'Transaction not added'
             ], 500);
     }
  
@@ -68,7 +71,7 @@ class TransactionController extends Controller
         if (!$transaction) {
             return response()->json([
                 'success' => false,
-                'message' => 'transaction not found'
+                'message' => 'Transaction not found'
             ], 400);
         }
  
@@ -81,7 +84,7 @@ class TransactionController extends Controller
         else
             return response()->json([
                 'success' => false,
-                'message' => 'transaction can not be updated'
+                'message' => 'Transaction can not be updated'
             ], 500);
     }
  

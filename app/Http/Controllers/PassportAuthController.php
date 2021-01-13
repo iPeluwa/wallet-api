@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\User;
 
-class UserController extends Controller
+class PassportAuthController extends Controller
 {
     /**
      * Registration
@@ -15,7 +15,6 @@ class UserController extends Controller
             'name' => 'required|min:4',
             'email' => 'required|email',
             'password' => 'required|min:8',
-            'confirm_password' => 'required|same:password', 
         ]);
  
         $user = User::create([
@@ -24,7 +23,7 @@ class UserController extends Controller
             'password' => bcrypt($request->password)
         ]);
        
-        $token = $user->createToken('walletapi')->accessToken;
+        $token = $user->createToken('LaravelAuthApp')->accessToken;
  
         return response()->json(['token' => $token], 200);
     }
@@ -40,7 +39,7 @@ class UserController extends Controller
         ];
  
         if (auth()->attempt($data)) {
-            $token = auth()->user()->createToken('walletapi')->accessToken;
+            $token = auth()->user()->createToken('LaravelAuthApp')->accessToken;
             return response()->json(['token' => $token], 200);
         } else {
             return response()->json(['error' => 'Unauthorised'], 401);

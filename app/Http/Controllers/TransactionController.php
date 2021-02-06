@@ -23,7 +23,7 @@ class TransactionController extends Controller
         if (!$transaction) {
             return response()->json([
                 'success' => false,
-                'message' => 'Transaction not found '
+                'message' => 'Transaction not found'
             ], 400);
         }
  

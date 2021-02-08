@@ -50,6 +50,7 @@ class TransactionController extends Controller
         $transaction->amount = $request->amount;
         $transaction->description = $request->description;
         $transaction->title = $request->title;
+        $transaction->transaction_currency = $request->transaction_currency;
         $transaction->transaction_type = $request->transaction_type;
  
         if (auth()->user()->transactions()->save($transaction))

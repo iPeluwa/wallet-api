@@ -14,17 +14,16 @@ class CreateTransactionsTable extends Migration
     public function up()
     {
         Schema::create('transactions', function (Blueprint $table) {
-            $table->id();
-            $table->Integer('transaction_id');
-            $table->unsignedBigInteger('user_id');
-            $table->Integer('reciever_id');
-            $table->Integer('amount');
-            $table->longText('description');
-            $table->text('title');
-            $table->enum('transaction_type', ['send', 'recieve', 'request']);
+            $table->bigIncrements('id');
+            $table->string("txn_type", 255)->nullable();
+            $table->string("purpose", 255)->nullable();
+            $table->decimal("amount", 20, 4)->nullable();
+            $table->integer("account_id")->nullable();
+            $table->string("reference")->nullable();
+            $table->decimal("balance_before", 20, 4)->nullable();
+            $table->decimal("balance_after", 20, 4)->nullable();
+            $table->longText('metadata')->nullable();
             $table->timestamps();
-
-            $table->foreign('user_id')->references('id')->on('users');  
         });
     }
 

@@ -2,9 +2,6 @@
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\UserController;
-use App\Http\Controllers\TransactionController;
-use App\Http\Controllers\PostController;
 
 /*
 |--------------------------------------------------------------------------
@@ -17,10 +14,28 @@ use App\Http\Controllers\PostController;
 |
 */
 
-Route::post('register', [UserController::class, 'register']);
-Route::post('login', [UserController::class, 'login']);
+Route::middleware('auth:api')->get('/user', function (Request $request) {
+    return $request->user();
+});
 
-Route::middleware('auth:api')->group(function () {
-    Route::resource('transactions', TransactionController::class);
-    Route::resource('posts', PostController::class);
+Route::group(['prefix' => 'v1'], function () {
+    Route::post('account', [
+        'uses' => 'AccountController@create_account',
+        'as' => 'Create Account'
+    ]);
+
+});
+
+
+Route::group(['prefix' => 'v1'], function () {
+    Route::post('transaction/credit', [
+        'uses' => 'TransactionController@process_credit_transaction',
+        'as' => 'Credit Account'
+    ]);
+
+    Route::post('transaction/debit', [
+        'uses' => 'TransactionController@process_debit_transaction',
+        'as' => 'Debit Account'
+    ]);
+
 });
